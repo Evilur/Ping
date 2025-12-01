@@ -1,0 +1,9 @@
+@import 'colors.css';
+
+#chat-list {
+    background-color: var(--color-mantle);
+    min-width: 50px;
+    width: 25vw;
+    max-width: 75vw;
+    height: calc(100vh - 35px);
+}
