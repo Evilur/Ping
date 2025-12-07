@@ -16,10 +16,20 @@ INCLUDE_DIRECTORIES(src)
 FILE(GLOB_RECURSE SOURCES "src/*.cpp")
 ADD_EXECUTABLE(Echo ${SOURCES})
 
+# Build all *.cpp files for tests
+FILE(GLOB_RECURSE SOURCES_TEST "test/*.cpp")
+ADD_EXECUTABLE(Test ${SOURCES_TEST})
+
 # Copy assets directory
 add_custom_command(TARGET Echo POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:Echo>/assets
+)
+
+# Copy tests directory
+add_custom_command(TARGET Test POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/test/units $<TARGET_FILE_DIR:Echo>/test/units
 )
 
 # Link all dependencies
