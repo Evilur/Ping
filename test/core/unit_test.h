@@ -23,7 +23,7 @@ private:
 
 template <typename F> void UnitTest::Run(const char* title, F func) {
     /* Print the number of the test */
-    printf("\033[34mUnit test #%hu (%s)", _counter++, title);
+    printf("\033[34mUnit test #%hu: %s ", _counter++, title);
     fflush(stdout);
 
     /* Create a temporary file to store the current output */
@@ -95,13 +95,13 @@ template <typename F> void UnitTest::Run(const char* title, F func) {
 
     /* Print the result */
     if (are_equal) {
-        printf(" \033[32m[OK]\n");
+        printf("\033[32m[OK]\n");
 
         /* Remove the temporary file */
         fs::remove(temp_file_path);
     }
     else {
-        printf(" \033[31m[ERROR]\n");
+        printf("\033[31m[ERROR]\n");
         printf("See current output in: %s\n", temp_file_path.c_str());
     }
 }
