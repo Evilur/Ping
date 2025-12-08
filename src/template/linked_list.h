@@ -5,7 +5,6 @@
 template <typename T>
 class LinkedList {
 protected:
-    class Iterator;
     class Node;
 
 public:
@@ -41,6 +40,20 @@ public:
 
     T& operator[](unsigned int index) const;
 
+    class Iterator {
+    public:
+        explicit Iterator(Node* node_ptr) noexcept;
+
+        bool operator!=(const Iterator& other) const noexcept;
+
+        const T& operator*() const noexcept;
+
+        Iterator& operator++() noexcept;
+
+    private:
+        Node* _node;
+    };
+
     Iterator begin() const noexcept;
 
     Iterator end() const noexcept;
@@ -52,20 +65,6 @@ protected:
 
         T value;
         Node* next = nullptr;
-    };
-
-    class Iterator {
-    public:
-        explicit Iterator(Node* node_ptr) noexcept;
-
-        bool operator!=(const Iterator& other) noexcept;
-
-        const T& operator*() const noexcept;
-
-        Iterator& operator++() noexcept;
-
-    private:
-        Node* _node;
     };
 
     Node* _head = nullptr;
@@ -300,7 +299,7 @@ template <typename T>
 LinkedList<T>::Iterator::Iterator(Node* node_ptr) noexcept : _node(node_ptr) { }
 
 template <typename T>
-bool LinkedList<T>::Iterator::operator!=(const Iterator& other) noexcept {
+bool LinkedList<T>::Iterator::operator!=(const Iterator& other) const noexcept {
     return _node != other._node;
 }
 

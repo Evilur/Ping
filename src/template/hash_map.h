@@ -10,33 +10,34 @@
  */
 template<typename K, typename T>
 class HashMap final {
+struct Node;
 public:
     /**
      * @param capacity Maximum number of elements without resizing
      */
-    explicit HashMap(u_int capacity);
+    explicit HashMap(unsigned short capacity) noexcept;
 
     /**
      * Free the memory
      */
-    ~HashMap();
+    ~HashMap() noexcept;
 
     /**
-     * Delete copy constructor
+     * Delete the copy constructor
      */
-    HashMap(const HashMap&) = delete;
+    HashMap(const HashMap&) noexcept = delete;
 
     /**
-     * Delete copy operator
+     * Delete the copy operator
      */
-    HashMap& operator=(const HashMap&) = delete;
+    HashMap& operator=(const HashMap&) noexcept = delete;
 
     /**
      * Put an element into the hash map
      * @param key The key that can be used to retrieve the element
      * @param element Element to put into the map
      */
-    void Put(K key, T element);
+    void Put(K key, T element) noexcept;
 
     /**
      * Get the element from the hash map by the key
@@ -45,12 +46,47 @@ public:
      */
     T Get(K key) const;
 
+    /**
+     * Iterator to go through the hash map
+     */
+    class Iterator {
+    public:
+        explicit Iterator(unsigned short index,
+                          unsigned short capacity,
+                          const LinkedList<Node>* lists,
+                          LinkedList<Node>::Iterator iterator
+                          ) noexcept;
+
+        bool operator!=(const Iterator& other) const noexcept;
+
+        const Node& operator*() const noexcept;
+
+        Iterator& operator++() noexcept;
+
+    private:
+        unsigned short _index;
+        const unsigned short _capacity;
+        const LinkedList<Node>* const _lists;
+        LinkedList<Node>::Iterator _iterator;
+    };
+
+    /**
+     * Get the iterator for the first element
+     * @return iterator for the first element
+     */
+    Iterator begin() const noexcept;
+
+    /**
+     * Get the iterator after the last element
+     * @return iterator after the last element
+     */
+    Iterator end() const noexcept;
+
 private:
     /**
-     * A node to keep in the linked list
+     * Node to keep the element and its key in the linked list
      */
-    class Node {
-    public:
+    struct Node {
         K key;
         T element;
     };
@@ -63,7 +99,7 @@ private:
     /**
      * A size of the array with linked lists
      */
-    const u_int _capacity;
+    const unsigned short _capacity;
 
     /**
      * Calculate the hash
@@ -74,16 +110,14 @@ private:
 };
 
 template<typename K, typename T>
-HashMap<K, T>::HashMap(const u_int capacity) :
+HashMap<K, T>::HashMap(const unsigned short capacity) noexcept :
         _lists(new LinkedList<Node>[capacity]), _capacity(capacity) { }
 
 template <typename K, typename T>
-HashMap<K, T>::~HashMap() { delete[] _lists; }
+HashMap<K, T>::~HashMap() noexcept { delete[] _lists; }
 
 template<typename K, typename T>
-void HashMap<K, T>::Put(K key, T element) {
-    auto penis = GetHash(key);
-
+void HashMap<K, T>::Put(K key, T element) noexcept {
     /* Put the node to the one of the linked lists, according to the hash */
     _lists[GetHash(key)].Push({ key, element });
 }
@@ -100,6 +134,61 @@ T HashMap<K, T>::Get(K key) const {
 
     /* If there is NOT an element in the linked list, throw an error */
     throw std::runtime_error("HashMap: Get() no such an element");
+}
+
+template <typename K, typename T>
+HashMap<K, T>::Iterator HashMap<K, T>::begin() const noexcept {
+    for (unsigned short i = 0; i < _capacity; ++i)
+        if (_lists[i].begin() != _lists[i].end())
+            return Iterator(i, _capacity, _lists, _lists[i].begin());
+    return end();
+}
+
+template <typename K, typename T>
+HashMap<K, T>::Iterator HashMap<K, T>::end() const noexcept {
+    return Iterator(_capacity, _capacity, _lists,
+                    typename LinkedList<Node>::Iterator(nullptr));
+}
+
+template <typename K, typename T>
+HashMap<K, T>::Iterator::Iterator(
+    const unsigned short index,
+    const unsigned short capacity,
+    const LinkedList<Node>* const lists,
+    const typename LinkedList<Node>::Iterator iterator
+) noexcept : _index(index), _capacity(capacity),
+             _lists(lists), _iterator(iterator) { }
+
+template <typename K, typename T>
+bool HashMap<K, T>::Iterator::operator!=(const Iterator& other) const noexcept {
+    if (_index == _capacity && other._index == other._capacity) return false;
+    if (_index != other._index) return true;
+    return _iterator != other._iterator;
+}
+
+template <typename K, typename T>
+const HashMap<K, T>::Node& HashMap<K, T>::Iterator::operator*() const noexcept {
+    return *_iterator;
+}
+
+template <typename K, typename T>
+HashMap<K, T>::Iterator& HashMap<K, T>::Iterator::operator++() noexcept {
+    if (_index == _capacity) return *this;
+
+    ++_iterator;
+    if (_iterator != _lists[_index].end()) return *this;
+
+    ++_index;
+    for (; _index < _capacity; ++_index) {
+        if (_lists[_index].begin() != _lists[_index].end()) {
+            _iterator = _lists[_index].begin();
+            return *this;
+        }
+    }
+
+    _index = _capacity;
+    _iterator = typename LinkedList<Node>::Iterator(nullptr);
+    return *this;
 }
 
 template <typename K, typename T>
