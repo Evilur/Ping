@@ -64,9 +64,23 @@ public:
         Iterator& operator++() noexcept;
 
     private:
+        /**
+         * Index of the current bucket in the hash table
+         */
         unsigned short _index;
+        /**
+         * Total number of buckets in the hash table
+         */
         const unsigned short _capacity;
-        const LinkedList<Node>* const _lists;
+        /**
+         * Pointer to the array of linked lists (buckets)
+         * that make up the hash table
+         */
+        const LinkedList<Node>* const _buckets;
+        /**
+         * Iterator pointing to the current node
+         * inside the current bucket's linked list
+         */
         LinkedList<Node>::Iterator _iterator;
     };
 
@@ -94,7 +108,7 @@ private:
     /**
      * A pointer to the dynamic array with linked lists for resolving collisions
      */
-    LinkedList<Node>* const _lists;
+    LinkedList<Node>* const _buckets;
 
     /**
      * A size of the array with linked lists
@@ -111,15 +125,15 @@ private:
 
 template<typename K, typename T>
 HashMap<K, T>::HashMap(const unsigned short capacity) noexcept :
-        _lists(new LinkedList<Node>[capacity]), _capacity(capacity) { }
+        _buckets(new LinkedList<Node>[capacity]), _capacity(capacity) { }
 
 template <typename K, typename T>
-HashMap<K, T>::~HashMap() noexcept { delete[] _lists; }
+HashMap<K, T>::~HashMap() noexcept { delete[] _buckets; }
 
 template<typename K, typename T>
 void HashMap<K, T>::Put(K key, T element) noexcept {
     /* Put the node to the one of the linked lists, according to the hash */
-    _lists[GetHash(key)].Push({ key, element });
+    _buckets[GetHash(key)].Push({ key, element });
 }
 
 template<typename K, typename T>
@@ -128,7 +142,7 @@ T HashMap<K, T>::Get(K key) const {
     unsigned short hash = GetHash(key);
 
     /* Try to get the node from the linked list */
-    for (Node node : _lists[hash])
+    for (Node node : _buckets[hash])
         if (node.key == key)
             return node.element;
 
@@ -138,15 +152,22 @@ T HashMap<K, T>::Get(K key) const {
 
 template <typename K, typename T>
 HashMap<K, T>::Iterator HashMap<K, T>::begin() const noexcept {
+    /* Iterate over all buckets */
     for (unsigned short i = 0; i < _capacity; ++i)
-        if (_lists[i].begin() != _lists[i].end())
-            return Iterator(i, _capacity, _lists, _lists[i].begin());
+        /* If the current bucket is not empty,
+         * return iterator to its first element */
+        if (_buckets[i].begin() != _buckets[i].end())
+            return Iterator(i, _capacity, _buckets, _buckets[i].begin());
+
+    /* If all buckets are empty, return end() iterator */
     return end();
 }
 
 template <typename K, typename T>
 HashMap<K, T>::Iterator HashMap<K, T>::end() const noexcept {
-    return Iterator(_capacity, _capacity, _lists,
+    /* Construct an iterator representing the end position:
+     * index == capacity and internal list iterator == nullptr */
+    return Iterator(_capacity, _capacity, _buckets,
                     typename LinkedList<Node>::Iterator(nullptr));
 }
 
@@ -157,12 +178,17 @@ HashMap<K, T>::Iterator::Iterator(
     const LinkedList<Node>* const lists,
     const typename LinkedList<Node>::Iterator iterator
 ) noexcept : _index(index), _capacity(capacity),
-             _lists(lists), _iterator(iterator) { }
+             _buckets(lists), _iterator(iterator) { }
 
 template <typename K, typename T>
 bool HashMap<K, T>::Iterator::operator!=(const Iterator& other) const noexcept {
+    /* If both iterators are "end" iterators, they are equal */
     if (_index == _capacity && other._index == other._capacity) return false;
+
+    /* If they point to different buckets, they are not equal */
     if (_index != other._index) return true;
+
+    /* Otherwise compare underlying list iterators */
     return _iterator != other._iterator;
 }
 
@@ -173,19 +199,21 @@ const HashMap<K, T>::Node& HashMap<K, T>::Iterator::operator*() const noexcept {
 
 template <typename K, typename T>
 HashMap<K, T>::Iterator& HashMap<K, T>::Iterator::operator++() noexcept {
+    /* If iterator is already at end(), do nothing */
     if (_index == _capacity) return *this;
 
-    ++_iterator;
-    if (_iterator != _lists[_index].end()) return *this;
+    /* If still inside a non-empty bucket, stop here */
+    if (++_iterator != _buckets[_index].end()) return *this;
 
-    ++_index;
-    for (; _index < _capacity; ++_index) {
-        if (_lists[_index].begin() != _lists[_index].end()) {
-            _iterator = _lists[_index].begin();
+    /* Skip empty buckets until a non-empty one is found */
+    while (++_index < _capacity) {
+        if (_buckets[_index].begin() != _buckets[_index].end()) {
+            _iterator = _buckets[_index].begin();
             return *this;
         }
     }
 
+    /* If no more buckets contain elements, set iterator to end() */
     _index = _capacity;
     _iterator = typename LinkedList<Node>::Iterator(nullptr);
     return *this;
