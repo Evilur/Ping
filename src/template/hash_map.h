@@ -37,14 +37,14 @@ public:
      * @param key The key that can be used to retrieve the element
      * @param element Element to put into the map
      */
-    void Put(K key, T element) noexcept;
+    void Put(K key, T element);
 
     /**
      * Get the element from the hash map by the key
      * @param key The key to get the element by
      * @return Element with the similar key; nullptr if there is no such element
      */
-    T Get(K key) const;
+    T& Get(K key) const;
 
     /**
      * Iterator to go through the hash map
@@ -131,15 +131,26 @@ template <typename K, typename T>
 HashMap<K, T>::~HashMap() noexcept { delete[] _buckets; }
 
 template<typename K, typename T>
-void HashMap<K, T>::Put(K key, T element) noexcept {
-    /* Put the node to the one of the linked lists, according to the hash */
-    _buckets[GetHash(key)].Push({ key, element });
+void HashMap<K, T>::Put(K key, T element) {
+    /* Calculate the key hash */
+    const unsigned short hash = GetHash(key);
+
+    /* Try to get the node from the linked list */
+    for (Node node : _buckets[hash])
+        if (node.key == key)
+            throw std::runtime_error(
+                "HashMap: Put() an element with such a key already exists"
+            );
+
+    /* If there is no an element with such a key yet,
+     * put the node to the one of the buckets, according to the hash */
+    _buckets[hash].Push({ key, element });
 }
 
 template<typename K, typename T>
-T HashMap<K, T>::Get(K key) const {
+T& HashMap<K, T>::Get(K key) const {
     /* Calculate the hash */
-    unsigned short hash = GetHash(key);
+    const unsigned short hash = GetHash(key);
 
     /* Try to get the node from the linked list */
     for (Node node : _buckets[hash])
