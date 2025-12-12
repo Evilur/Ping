@@ -7,7 +7,7 @@ Window {
     visible: true
     width: 1280
     height: 720
-    title: 'Echo'
+    title: 'Ping'
 
     /* Status Bar */
     Rectangle {
@@ -84,7 +84,8 @@ Window {
         property real minWidth: 75
 
         function resize(newWidth = 0): void {
-            if (newWidth !== 0) this.width = newWidth;
+            if (newWidth !== 0 && (newWidth > 300 || newWidth < this.minWidth))
+                this.width = newWidth;
             if (messageArea.width < 350) this.width = root.width - 350;
             if (this.width < 250) this.width = this.minWidth;
         }
@@ -97,9 +98,7 @@ Window {
             anchors.horizontalCenter: parent.right
             anchors.top: parent.top
             onPositionChanged: (mouse) => {
-                const newWidth = parent.width + mouse.x - this.width / 2;
-                if (newWidth > 250 || newWidth < 150)
-                    parent.resize(newWidth);
+                parent.resize(parent.width + mouse.x - this.width / 2);
             }
         }
     }

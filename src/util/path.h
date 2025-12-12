@@ -20,10 +20,10 @@ public:
     static inline const fs::path HOME_DIR = getpwuid(getuid())->pw_dir;
 
     /* Get the config directory */
-    static inline const fs::path CONFIG_DIR = HOME_DIR / ".config/Echo";
+    static inline const fs::path CONFIG_DIR = HOME_DIR / ".config/Ping";
 
     /* Get the log directory */
-    static inline const fs::path LOG_DIR = HOME_DIR / ".cache/Echo";
+    static inline const fs::path LOG_DIR = HOME_DIR / ".cache/Ping";
 
 #endif
     /* Get the config file path */
@@ -36,5 +36,5 @@ public:
     static inline const fs::path ULTRALIGHT_LOG = LOG_DIR / "ultralight.log";
 
     /* Get the basic log file */
-    static inline const fs::path LOG_FILE = LOG_DIR / "echo.log";
+    static inline const fs::path LOG_FILE = LOG_DIR / "ping.log";
 };

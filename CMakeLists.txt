@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 4.0)
 SET(CMAKE_CXX_STANDARD 23)
-PROJECT(Echo)
+PROJECT(Ping)
 
 # Set build types
 IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -23,7 +23,7 @@ FILE(GLOB_RECURSE SOURCES "src/*.cpp")
 FILE(GLOB_RECURSE SOURCES_QRC "assets/*.qrc")
 
 # Build all *.cpp and *.qrc files
-ADD_EXECUTABLE(Echo ${SOURCES} ${SOURCES_QRC})
+ADD_EXECUTABLE(Ping ${SOURCES} ${SOURCES_QRC})
 
 # Build all *.cpp files for tests
 FILE(GLOB_RECURSE SOURCES_TEST "test/*.cpp")
@@ -34,12 +34,12 @@ ADD_EXECUTABLE(Test ${SOURCES_TEST}
 # Copy tests directory
 ADD_CUSTOM_COMMAND(TARGET Test POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/test/units $<TARGET_FILE_DIR:Echo>/test/units
+        ${CMAKE_SOURCE_DIR}/test/units $<TARGET_FILE_DIR:Ping>/test/units
 )
 
 # Link all dependencies
 FIND_PACKAGE(Qt6 REQUIRED COMPONENTS Quick Qml)
-TARGET_LINK_LIBRARIES(Echo PRIVATE
+TARGET_LINK_LIBRARIES(Ping PRIVATE
         Qt6::Quick
         Qt6::Qml
 )
