@@ -17,6 +17,9 @@ String::String(const char* str, const unsigned long str_size) noexcept :
 #pragma GCC diagnostic pop
 }
 
+String::String(const String& string) noexcept :
+    String(string._str, string._size) { }
+
 String::~String() noexcept {
     delete[] _str;
 }
@@ -33,36 +36,4 @@ String::operator const char*() const noexcept {
 
 String::operator std::string_view() const noexcept {
     return std::string_view(_str);
-}
-
-unsigned char String::ToUInt8(const char* str) noexcept {
-    return ToUInt<unsigned char>(str);
-}
-
-unsigned short String::ToUInt16(const char* str) noexcept {
-    return ToUInt<unsigned short>(str);
-}
-
-unsigned int String::ToUInt32(const char* str) noexcept {
-    return ToUInt<unsigned int>(str);
-}
-
-unsigned long String::ToUInt64(const char* str) noexcept {
-    return ToUInt<unsigned long>(str);
-}
-
-char String::ToInt8(const char* str) noexcept {
-    return ToInt<char, unsigned char>(str);
-}
-
-short String::ToInt16(const char* str) noexcept {
-    return ToInt<short, unsigned short>(str);
-}
-
-int String::ToInt32(const char* str) noexcept {
-    return ToInt<int, unsigned int>(str);
-}
-
-long String::ToInt64(const char* str) noexcept {
-    return ToInt<long, unsigned long>(str);
 }
