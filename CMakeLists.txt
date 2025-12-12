@@ -38,11 +38,8 @@ ADD_CUSTOM_COMMAND(TARGET Test POST_BUILD
 )
 
 # Link all dependencies
-FIND_PACKAGE(Qt6 REQUIRED COMPONENTS Core Gui Quick Qml QuickControls2)
+FIND_PACKAGE(Qt6 REQUIRED COMPONENTS Quick Qml)
 TARGET_LINK_LIBRARIES(Echo PRIVATE
-        Qt6::Core
-        Qt6::Gui
         Qt6::Quick
         Qt6::Qml
-        Qt6::QuickControls2
 )

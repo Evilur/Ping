@@ -130,6 +130,32 @@ Settings::Parameter::~Parameter() {
     else delete[] (char*)_data;
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
+void Settings::Parameter::Set(const int data) {
+    if (_type != INTEGER) throw
+            std::runtime_error("Settings::Parameter: Set<int> invalid type");
+    *(int*)_data = data;
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void Settings::Parameter::Set(const float data){
+    if (_type != FLOAT) throw
+            std::runtime_error("Settings::Parameter: Set<float> invalid type");
+    *(float*)_data = data;
+}
+
+void Settings::Parameter::Set(const char* const data){
+    if (_type == STRING) {
+        delete[] (char*)_data;
+        _data = new char[strlen(data)+ 1];
+        strcpy((char*)_data, data);
+    } else if (_type == INTEGER) {
+        *(int*)_data = atoi(data);
+    } else if (_type == FLOAT) {
+        *(float*)_data = atof(data);
+    }
+}
+
 Settings::Parameter::operator int() const {
     if (_type != INTEGER) throw
             std::runtime_error("Settings::Parameter: Get<int> invalid type");
