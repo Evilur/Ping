@@ -53,6 +53,7 @@ template <typename F> void UnitTest::Run(const char* title, F func) {
 
     /* Flush the file */
     std::cout << std::flush;
+    std::cerr << std::flush;  //IDK is this necessary
 
     /* Redirect file descriptors to the terminal again */
     dup2(real_stdout, STDOUT_FILENO);
