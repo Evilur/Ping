@@ -3,7 +3,9 @@
 #include <cstring>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <unistd.h>
+#include <fcntl.h>
 
 namespace fs = std::filesystem;
 
@@ -33,17 +35,33 @@ template <typename F> void UnitTest::Run(const char* title, F func) {
     snprintf(filename, sizeof(filename), "%s.%s.result",
              _current_block_title, title);
     const fs::path temp_file_path = fs::temp_directory_path() / (char*)filename;
-    std::ofstream temp_file(temp_file_path);
+
+    /* Redirect STDOUT and STDERR to the temp file */
+    const int real_stdout = dup(STDOUT_FILENO);
+    const int real_stderr = dup(STDERR_FILENO);
+    const int file_fd = open(temp_file_path.c_str(),
+        O_WRONLY | O_CREAT | O_TRUNC, 0600);
+    dup2(file_fd, STDOUT_FILENO);
+    dup2(file_fd, STDERR_FILENO);
 
     /* Exec the function */
     try {
-        func(temp_file);
+        func();
     } catch (std::exception& e) {
-        temp_file << e.what();
+        std::cerr << e.what();
     }
 
-    /* Close writing the file */
-    temp_file.close();
+    /* Flush the file */
+    std::cout << std::flush;
+
+    /* Redirect file descriptors to the terminal again */
+    dup2(real_stdout, STDOUT_FILENO);
+    dup2(real_stderr, STDERR_FILENO);
+
+    /* Close files */
+    close(file_fd);
+    close(real_stdout);
+    close(real_stderr);
 
     /* Open two files for reading: current output and right output */
     snprintf(filename, sizeof(filename), "%s/%s.unit",
