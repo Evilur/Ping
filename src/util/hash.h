@@ -1,7 +1,4 @@
 #pragma once
-#include "logger.h"
-
-
 #include <cstring>
 #include <type_traits>
 
@@ -27,10 +24,10 @@ inline unsigned long Hash::Get(char* const& element) noexcept {
 
 template <typename T>
 unsigned long Hash::Get(const T& element) noexcept {
-    /* This method cannot work with pointers */
-    static_assert(!std::is_pointer_v<T>,
-                  "HashMap::GetHash() can't work with pointers as a key");
-
     /* Get the byte array from the element and calc the hash */
-    return Calculate((const unsigned char*)(void*)&element, sizeof(element));
+    if constexpr (std::is_pointer_v<T>)
+        return Get(*element);
+    else
+        return Calculate((const unsigned char*)(void*)&element,
+                         sizeof(element));
 }

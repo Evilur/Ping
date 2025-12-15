@@ -1,5 +1,5 @@
-#include "hash_map.h"
-#include "container/hash_map.h"
+#include "dictionary.h"
+#include "container/dictionary.h"
 
 #include "../core/unit_test.h"
 
