@@ -10,43 +10,15 @@ void Settings::Init(){
     ui_map->Put("chat_list_width", &UI::chat_list_width);
 
     /* Add all settings sections to the master dictionary */
-    _settings_map = new HashMap<const char*, section_map*>(16);
+    _settings_map = new Dictionary<const char*, section_map*>(16);
     _settings_map->Put("UI", ui_map);
-}
 
-void Settings::Save() {
-    /* Make a backup of an old settings file (if exists) */
-    if (fs::exists(Path::CONFIG_FILE))
-        copy_file(Path::CONFIG_FILE, Path::CONFIG_FILE_BAK,
-                  fs::copy_options::overwrite_existing);
-
-    /* Create a new settings file */
-    std::ofstream config(Path::CONFIG_FILE);
-    for (const auto& [section_name, settings_section] : *_settings_map) {
-        /* Print a section name */
-        config << "[" << section_name << "]" << std::endl;
-
-        /* Print all settings of this section */
-        for (const auto& [setting_name, parameter] : *settings_section)
-            config << setting_name << " = "
-                   << (const char*)*parameter << std::endl;
-
-        /* Print the blank line */
-        config << std::endl;
-    }
-
-    /* Delete the backup file */
-    fs::remove(Path::CONFIG_FILE_BAK);
-
-    /* Print the log */
-    INFO_LOG("The settings have been saved");
-}
-
-void Settings::Read() {
+    /* Read the settings from the disk */
     /* TODO: handle existing .bak config file */
 
     /* If the settings file doesn't exist, exit the method */
     if (!fs::exists(Path::CONFIG_FILE)) return;
+    INFO_LOG("Reading the settings from the disk");
 
     /* Parse the settings .ini file */
     std::ifstream config(Path::CONFIG_FILE);
@@ -108,7 +80,39 @@ void Settings::Read() {
         } catch (const std::runtime_error&) { }
     }
 
+    /* Print the log */
     INFO_LOG("The settings have been read from the disk");
+}
+
+void Settings::Save() {
+    /* Print the log */
+    INFO_LOG("Saving the settings");
+
+    /* Make a backup of an old settings file (if exists) */
+    if (fs::exists(Path::CONFIG_FILE))
+        copy_file(Path::CONFIG_FILE, Path::CONFIG_FILE_BAK,
+                  fs::copy_options::overwrite_existing);
+
+    /* Create a new settings file */
+    std::ofstream config(Path::CONFIG_FILE);
+    for (const auto& [section_name, settings_section] : *_settings_map) {
+        /* Print a section name */
+        config << "[" << section_name << "]" << std::endl;
+
+        /* Print all settings of this section */
+        for (const auto& [setting_name, parameter] : *settings_section)
+            config << setting_name << " = "
+                   << (const char*)*parameter << std::endl;
+
+        /* Print the blank line */
+        config << std::endl;
+    }
+
+    /* Delete the backup file */
+    fs::remove(Path::CONFIG_FILE_BAK);
+
+    /* Print the log */
+    INFO_LOG("The settings have been saved");
 }
 
 Settings::Parameter::Parameter(const int data) : _type(INTEGER) {

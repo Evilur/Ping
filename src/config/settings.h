@@ -1,17 +1,11 @@
 #pragma once
-#include "container/hash_map.h"
-
-#include <cstring>
-#include <AppCore/JSHelpers.h>
-#include <Ultralight/View.h>
+#include "container/dictionary.h"
 
 class Settings final {
 public:
     static void Init();
 
     static void Save();
-
-    static void Read();
 
 private:
     class Parameter {
@@ -46,8 +40,8 @@ private:
         const Type _type;
     };
 
-    using section_map = HashMap<const char*, Parameter*>;
-    static inline HashMap<const char*, section_map*>* _settings_map = nullptr;
+    using section_map = Dictionary<const char*, Parameter*>;
+    static inline Dictionary<const char*, section_map*>* _settings_map = nullptr;
 
 public:
     struct UI {
