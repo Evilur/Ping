@@ -7,6 +7,8 @@ Window {
     visible: true
     width: 1280
     height: 720
+    minimumWidth: 425
+    minimumHeight: 450
     title: 'Ping'
 
     /* Status Bar */
@@ -146,6 +148,29 @@ Window {
             left: chatList.right
         }
         color: Color.base
+
+        /* Placeholder message */
+        Rectangle {
+            id: placeholderMessage
+            anchors.centerIn: parent
+            color: Color.grey_10
+            radius: 10
+
+            width: placeholderMessageText.contentWidth + 20
+            height: placeholderMessageText.contentHeight + 8
+
+            Text {
+                id: placeholderMessageText
+                text: 'Чтобы начать общение, откройте чат или создайте новый'
+                anchors.centerIn: parent
+                color: Color.text
+                font.family: 'JetBrains Mono NL'
+                font.pixelSize: 18
+                wrapMode: Text.WordWrap
+                width: Math.min(messageArea.width - 50, implicitWidth)
+                horizontalAlignment: Text.AlignHCenter
+            }
+        }
     }
 
     /* Resize the chat list */
