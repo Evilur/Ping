@@ -44,55 +44,47 @@ Window {
         }
 
         /* Action Buttons */
-        component ActionButton: Rectangle {
-            height: parent.height
-            width: parent.height * 2
+        component ActionButton: Button {
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+            }
+            scale: 1
+            width: height * 2
+            hoverEnabled: true
+
+            property string hoverColor: Color.grey_05
             property alias source: image.source
 
-            /* Default and hover colors */
-            color: hoverHandler.hovered ? hoverColor : "transparent"
-            property string hoverColor: Color.grey_05
-
-            /* OnClicked signal */
-            signal clicked()
+            Rectangle {
+                anchors.fill: parent
+                color: parent.containsMouse ? parent.hoverColor : 'transparent'
+            }
 
             Image {
                 id: image
                 anchors.centerIn: parent
                 fillMode: Image.PreserveAspectFit
             }
-
-            MouseArea {
-                /* Fill the parent */
-                anchors.fill: parent
-
-                /* Change the cursors type to pointer */
-                cursorShape: Qt.PointingHandCursor
-
-                /* Send the onClicked signal */
-                onClicked: parent.clicked()
-            }
-
-            HoverHandler { id: hoverHandler }
         }
         ActionButton {
             id: collapseButton
             anchors.right: maximizeButton.left
-            anchors.top: parent.top
             source: 'qrc:/img/status-bar/collapse.svg'
+            onClicked: console.log('Collapse button is clicked')
         }
         ActionButton {
             id: maximizeButton
             anchors.right: closeButton.left
-            anchors.top: parent.top
             source: 'qrc:/img/status-bar/maximize.svg'
+            onClicked: console.log('Maximize button is clicked')
         }
         ActionButton {
             id: closeButton
             hoverColor: Color.red
             anchors.right: parent.right
-            anchors.top: parent.top
             source: 'qrc:/img/status-bar/close.svg'
+            onClicked: console.log('Close button is clicked')
         }
     }
 
@@ -137,27 +129,28 @@ Window {
         }
 
         /* New chat button */
-        Image {
-            id: newChatButton
+        Button {
             property int size: 50
+            width: size
+            height: size
             anchors {
                 right: parent.right
                 bottom: parent.bottom
                 margins: (parent.minWidth - size) / 2
             }
-            source: 'qrc:/img/chat-list/new-chat.svg'
-            sourceSize {
-                width: size
-                height: size
+            hoverEnabled: true
+            onEntered: toolTip.show(this, qsTr('Create a new chat'));
+            onExited: toolTip.hide();
+
+            Image {
+                source: 'qrc:/img/chat-list/new-chat.svg'
+                sourceSize {
+                    width: parent.size
+                    height: parent.size
+                }
             }
 
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onEntered: toolTip.show(this, qsTr('Create a new chat'));
-                onExited: toolTip.hide();
-                cursorShape: Qt.PointingHandCursor
-            }
+            onClicked: console.log('New chat button is clicked')
         }
     }
 
