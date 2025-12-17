@@ -19,7 +19,7 @@ Window {
             right: parent.right
             left: parent.left
         }
-        height: 45
+        height: 40
         color: Color.mantle
 
         /* Move the window by dragging the status bar */
@@ -140,8 +140,8 @@ Window {
                 margins: (parent.minWidth - size) / 2
             }
             hoverEnabled: true
-            onEntered: toolTip.show(this, qsTr('Create a new chat'));
-            onExited: toolTip.hide();
+            onEntered: ToolTip.show(this, qsTr('Create a new chat'));
+            onExited: ToolTip.hide();
 
             Image {
                 source: 'qrc:/img/chat-list/new-chat.svg'
@@ -192,7 +192,4 @@ Window {
 
     /* Resize the chat list */
     onWidthChanged: chatList.resize()
-
-    /* Tooltip object */
-    ToolTip { id: toolTip }
 }

@@ -1,3 +1,4 @@
+pragma Singleton
 import QtQuick
 import "qrc:/js/color.mjs" as Color
 
@@ -5,8 +6,6 @@ Window {
     width: Math.min(tooltipText.contentWidth + 18, 500)
     height: Math.min(tooltipText.contentHeight + 6, 500)
     flags: Qt.ToolTip
-    x: root.x
-    y: root.y
     color: Color.grey_15
 
     function show(item, text) {
