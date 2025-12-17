@@ -5,7 +5,7 @@
 
 UnitTest::UnitTest(const char* title) {
     /* Print the number of the unit test block */
-    printf("\033[35mUnit test block #%hu (%s)\n", _block_counter++, title);
+    printf("\n\033[35mUnit test block #%hu (%s)\n", _block_counter++, title);
     fflush(stdout);
 
     /* Save the current block title to the class field */

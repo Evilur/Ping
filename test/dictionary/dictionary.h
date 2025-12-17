@@ -1,3 +1,3 @@
 #pragma once
 
-void hash_map_unit_test();
+void dictionary_unit_test();
