@@ -19,7 +19,7 @@ inline unsigned long Hash::Get(const char* const& element) noexcept {
 
 template <>
 inline unsigned long Hash::Get(char* const& element) noexcept {
-    return Calculate((const unsigned char*)(void*)element, strlen(element) + 1);
+    return Get((const char*)element);
 }
 
 template <typename T>
