@@ -3,5 +3,7 @@
         <file>control/qmldir</file>
         <file>control/Button.qml</file>
         <file>control/ToolTip.qml</file>
+        <file>control/Scrollable.qml</file>
+        <file>visual/AppText.qml</file>
     </qresource>
 </RCC>
