@@ -1,12 +1,13 @@
 pragma Singleton
 import QtQuick
-import "qrc:/js/color.mjs" as Color
+import '../visual'
+import '../../js/color.mjs' as Color
 
 Window {
     width: Math.min(tooltipText.contentWidth + 18, 500)
     height: Math.min(tooltipText.contentHeight + 6, 500)
     flags: Qt.ToolTip
-    color: Color.grey_15
+    color: Color.GREY_15
 
     function show(item, text) {
         const itemPos = item.mapToGlobal(0, 0);
@@ -18,16 +19,13 @@ Window {
 
     function hide() { this.visible = false; }
 
-    Text {
+    AppText {
         id: tooltipText
         width: parent.width
         anchors.centerIn: parent
         wrapMode: Text.WordWrap
-        color: Color.text
-        font {
-            family: 'JetBrains Mono NL'
-            pixelSize: 18
-        }
+        color: Color.TEXT
+        font.pixelSize: 18
         horizontalAlignment: Text.AlignHCenter
     }
 }
