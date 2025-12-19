@@ -1,17 +1,8 @@
 import QtQuick
-import "component/control"
-import "js/color.mjs" as Color
+import 'qrc:/component/control'
+import 'qrc:/js/color.mjs' as Color
 
 Rectangle {
-    id: statusBar
-    anchors {
-        top: parent.top
-        right: parent.right
-        left: parent.left
-    }
-    height: 40
-    color: Color.mantle
-
     /* Move the window by dragging the status bar */
     MouseArea {
         anchors.fill: parent
@@ -22,15 +13,44 @@ Rectangle {
 
         /* Save the cursor position on the status bar */
         onPressed: (mouse) => {
-            this.clickPosX = mouse.x
-            this.clickPosY = mouse.y
+            this.clickPosX = mouse.x;
+            this.clickPosY = mouse.y;
         }
 
         /* Move the window */
         onPositionChanged: (mouse) => {
-            root.x += mouse.x - this.clickPosX
-            root.y += mouse.y - this.clickPosY
+            root.x += mouse.x - this.clickPosX;
+            root.y += mouse.y - this.clickPosY;
         }
+    }
+
+    /* Burger */
+    Button {
+        anchors {
+            left: parent.left
+            leftMargin: 22
+            verticalCenter: parent.verticalCenter
+
+        }
+        width: size
+        height: size
+        scale: pressed ? 0.8 : 1
+        hoverEnabled: true
+
+        readonly property int size: 30
+
+        Image {
+            anchors.fill: parent
+            sourceSize {
+                width: parent.size
+                height: parent.size
+            }
+            source: 'qrc:/img/status-bar/burger.svg'
+        }
+
+        onEntered: ToolTip.show(this, qsTr('Menu'))
+        onExited: ToolTip.hide()
+        onClicked: console.log('Burger button is clicked')
     }
 
     /* Action Buttons */
@@ -40,11 +60,10 @@ Rectangle {
                 top: parent.top
                 bottom: parent.bottom
             }
-            scale: 1
             width: height * 2
             hoverEnabled: true
 
-            property string hoverColor: Color.grey_05
+            property string hoverColor: Color.GREY_05
             property alias source: image.source
 
             Rectangle {
@@ -72,7 +91,7 @@ Rectangle {
             onClicked: console.log('Maximize button is clicked')
         }
         ActionButton {
-            hoverColor: Color.red
+            hoverColor: Color.RED
             source: 'qrc:/img/status-bar/close.svg'
             onClicked: console.log('Close button is clicked')
         }

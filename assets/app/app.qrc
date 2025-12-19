@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/app">
+        <file>MainWindow.qml</file>
+        <file>MainWindow/Chat.qml</file>
+        <file>MainWindow/ChatList.qml</file>
+        <file>MainWindow/MessageArea.qml</file>
+        <file>MainWindow/StatusBar.qml</file>
+    </qresource>
+</RCC>

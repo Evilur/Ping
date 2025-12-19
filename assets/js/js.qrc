@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/js/">
         <file>color.mjs</file>
+        <file>chat_type.mjs</file>
     </qresource>
 </RCC>
