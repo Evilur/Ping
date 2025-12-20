@@ -114,6 +114,7 @@ Button {
             right: chat.right
             rightMargin: parent.margin
             bottom: memberNumberText.bottom
+            bottomMargin: 2
         }
         text: {
             /* Get the dates */
