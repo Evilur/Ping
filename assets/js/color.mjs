@@ -1,3 +1,4 @@
+'use strict'
 export const CRUST         = '#181926';
 export const MANTLE        = '#1e2030';
 export const BASE          = '#24273a';

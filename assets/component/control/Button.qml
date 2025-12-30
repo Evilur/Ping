@@ -1,4 +1,4 @@
-import QtQuick 6.5
+import QtQuick
 
 MouseArea {
     cursorShape: Qt.PointingHandCursor

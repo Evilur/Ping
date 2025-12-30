@@ -30,6 +30,8 @@ CompileFlags:
     - -Wpointer-arith
     - -Wbad-function-cast
     - -Wnoexcept
+  Remove:
+    - -mno-direct-extern-access
   Compiler: g++
 Index:
   Background: true

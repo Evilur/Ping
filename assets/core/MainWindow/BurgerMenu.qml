@@ -1,6 +1,7 @@
 import QtQuick
-import 'qrc:/component/visual'
-import 'qrc:/js/color.mjs' as Color
+import App.Control
+import App.Visual
+import '../JS/color.mjs' as Color
 
 Overlay {
     Rectangle {

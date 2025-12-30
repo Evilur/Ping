@@ -7,10 +7,10 @@
 #include <QQmlApplicationEngine>
 #include <QTranslator>
 
-int main(int argc, char* argv[]) {
+int main(int argc, char** argv) {
     /* Init static classes */
     Path::Init();
-    Settings::Init();
+    //Settings::Init();
 
     /* Create a GUI application object */
     INFO_LOG("Creating the Qt application");
@@ -18,11 +18,11 @@ int main(int argc, char* argv[]) {
 
     /* Load translation */
     QTranslator translator;
-    if(translator.load((const char*)String::Format(
-            ":/i18n/%s.qm",
-            (const char*)Settings::UI::language
-        ))) {
-        app.installTranslator(&translator);
+    if(translator
+        .load((const char*)String::Format(":/i18n/%s.qm",
+                                          (const char*)Settings::UI::language))
+        ) {
+        QGuiApplication::installTranslator(&translator);
         INFO_LOG("Translation '%s' has been loaded",
                  (const char*)Settings::UI::language);
     } else WARN_LOG("Failed to load the '%s' translation",
@@ -31,11 +31,11 @@ int main(int argc, char* argv[]) {
     /* Create a QML engine */
     QQmlApplicationEngine engine;
 
-    /* Load the main window url */
-    const QUrl url(QStringLiteral("qrc:/app/MainWindow.qml"));
-    engine.load(url);
+    /* Load the main window module */
+    engine.addImportPath(QStringLiteral("qrc:/"));
+    engine.loadFromModule("App", "MainWindow");
 
     /* Run the application */
     INFO_LOG("Starting the application");
-    return app.exec();
+    return QGuiApplication::exec();
 }

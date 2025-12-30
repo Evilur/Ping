@@ -1,7 +1,6 @@
 import QtQuick
-import 'MainWindow'
-import 'qrc:/component/control'
-import 'qrc:/js/color.mjs' as Color
+import App.MainWindow
+import 'JS/color.mjs' as Color
 
 Window {
     id: root

@@ -1,6 +1,5 @@
 import QtQuick
-import QtQuick.Controls
-import '../../js/color.mjs' as Color
+import '../JS/color.mjs' as Color
 
 Item {
     clip: true

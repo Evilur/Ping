@@ -1,7 +1,7 @@
 import QtQuick
-import 'qrc:/component/control'
-import 'qrc:/component/visual'
-import 'qrc:/js/color.mjs' as Color
+import App.Control
+import App.Visual
+import '../JS/color.mjs' as Color
 
 Rectangle {
     /* Placeholder message */

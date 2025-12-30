@@ -1,8 +1,7 @@
 import QtQuick
-import 'qrc:/component/control'
-import 'qrc:/component/visual'
-import 'qrc:/js/color.mjs' as Color
-import 'qrc:/js/chat_type.mjs' as ChatType
+import App.Control
+import '../JS/color.mjs' as Color
+import '../JS/chat_type.mjs' as ChatType
 
 Rectangle {
     readonly property real minWidth: 75

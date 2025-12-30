@@ -1,8 +1,8 @@
 import QtQuick
-import 'qrc:/component/control'
-import 'qrc:/component/visual'
-import 'qrc:/js/color.mjs' as Color
-import 'qrc:/js/chat_type.mjs' as ChatType
+import App.Control
+import App.Visual
+import '../JS/color.mjs' as Color
+import '../JS/chat_type.mjs' as ChatType
 
 Button {
     id: chat
@@ -83,7 +83,7 @@ Button {
                 case ChatType.CHANNEL:
                     imageName = 'channel';
             }
-            return `qrc:/img/chat-list/${imageName}.svg`;
+            return `qrc:/App/Image/chat-list/${imageName}.svg`;
         }
         sourceSize {
             width: 16

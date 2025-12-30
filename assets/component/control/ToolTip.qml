@@ -1,7 +1,7 @@
 pragma Singleton
 import QtQuick
-import '../visual'
-import '../../js/color.mjs' as Color
+import App.Visual
+import '../JS/color.mjs' as Color
 
 Window {
     width: Math.min(tooltipText.contentWidth + 18, 500)
@@ -12,12 +12,12 @@ Window {
     function show(item, text) {
         const itemPos = item.mapToGlobal(0, 0);
         tooltipText.text = text;
-        this.x = itemPos.x + (item.width - width) / 2;
-        this.y = itemPos.y - height - 10;
-        this.visible = true;
+        x = itemPos.x + (item.width - width) / 2;
+        y = itemPos.y - height - 10;
+        visible = true;
     }
 
-    function hide() { this.visible = false; }
+    function hide() { visible = false; }
 
     AppText {
         id: tooltipText

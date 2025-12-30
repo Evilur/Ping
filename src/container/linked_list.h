@@ -5,14 +5,10 @@
 template <typename T>
 class LinkedList {
 protected:
-    class Node;
+    struct Node;
 
 public:
     LinkedList() = default;
-
-    LinkedList(const LinkedList&) = delete;
-
-    LinkedList& operator=(const LinkedList&) = delete;
 
     virtual ~LinkedList() noexcept;
 
@@ -59,8 +55,7 @@ public:
     Iterator end() const noexcept;
 
 protected:
-    class Node {
-    public:
+    struct Node {
         explicit Node(const T& value) noexcept;
 
         T value;

@@ -1,6 +1,6 @@
 import QtQuick
-import 'qrc:/component/control'
-import 'qrc:/js/color.mjs' as Color
+import App.Control
+import '../JS/color.mjs' as Color
 
 Rectangle {
     /* Move the window by dragging the status bar */
@@ -44,7 +44,7 @@ Rectangle {
                 width: parent.size - 4
                 height: parent.size - 4
             }
-            source: 'qrc:/img/status-bar/burger.svg'
+            source: 'qrc:/App/Image/status-bar/burger.svg'
         }
 
         onEntered: ToolTip.show(this, qsTr('Menu'))
@@ -82,16 +82,16 @@ Rectangle {
             right: parent.right
         }
         ActionButton {
-            source: 'qrc:/img/status-bar/collapse.svg'
+            source: 'qrc:/App/Image/status-bar/collapse.svg'
             onClicked: console.log('Collapse button is clicked')
         }
         ActionButton {
-            source: 'qrc:/img/status-bar/maximize.svg'
+            source: 'qrc:/App/Image/status-bar/maximize.svg'
             onClicked: console.log('Maximize button is clicked')
         }
         ActionButton {
             hoverColor: Color.RED
-            source: 'qrc:/img/status-bar/close.svg'
+            source: 'qrc:/App/Image/status-bar/close.svg'
             onClicked: console.log('Close button is clicked')
         }
     }

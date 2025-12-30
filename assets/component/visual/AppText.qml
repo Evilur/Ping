@@ -1,5 +1,5 @@
 import QtQuick
-import 'qrc:/js/color.mjs' as Color
+import '../JS/color.mjs' as Color
 
 Text {
     color: Color.TEXT

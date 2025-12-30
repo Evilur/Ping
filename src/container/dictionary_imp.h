@@ -1,5 +1,6 @@
 #pragma once
 
+#include "dictionary.h"
 #include "util/hash.h"
 
 template <typename K, typename T>
@@ -18,7 +19,7 @@ void Dictionary<K, T>::Put(K key, T element) {
     for (Node node : _buckets[hash])
         if (Equal(node.key, key))
             throw std::runtime_error(
-                "HashMap: Put() an element with such a key already exists"
+                "Dictionary: Put() an element with such a key already exists"
             );
 
     /* If there is no an element with such a key yet,
@@ -37,7 +38,7 @@ T& Dictionary<K, T>::Get(K key) const {
             return node.element;
 
     /* If there is NOT an element in the linked list, throw an error */
-    throw std::runtime_error("HashMap::Get() no such an element");
+    throw std::runtime_error("Dictionary::Get() no such an element");
 }
 
 template <typename K, typename T>
@@ -79,7 +80,8 @@ Dictionary<K, T>::Iterator::Iterator(
              _buckets(lists), _iterator(iterator) { }
 
 template <typename K, typename T>
-bool Dictionary<K, T>::Iterator::operator!=(const Iterator& other) const noexcept {
+bool Dictionary<K, T>::
+Iterator::operator!=(const Iterator& other) const noexcept {
     /* If both iterators are "end" iterators, they are equal */
     if (_index == _capacity && other._index == other._capacity) return false;
 
@@ -91,12 +93,14 @@ bool Dictionary<K, T>::Iterator::operator!=(const Iterator& other) const noexcep
 }
 
 template <typename K, typename T>
-const Dictionary<K, T>::Node& Dictionary<K, T>::Iterator::operator*() const noexcept {
+const Dictionary<K, T>::Node&
+Dictionary<K, T>::Iterator::operator*() const noexcept {
     return *_iterator;
 }
 
 template <typename K, typename T>
-Dictionary<K, T>::Iterator& Dictionary<K, T>::Iterator::operator++() noexcept {
+Dictionary<K, T>::Iterator&
+Dictionary<K, T>::Iterator::operator++() noexcept {
     /* If iterator is already at end(), do nothing */
     if (_index == _capacity) return *this;
 
