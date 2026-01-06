@@ -16,7 +16,7 @@ void Dictionary<K, T>::Put(K key, T element) {
     const unsigned short hash = Hash::Get(key) % _capacity;
 
     /* Try to get the node from the linked list */
-    for (Node node : _buckets[hash])
+    for (const Node& node : _buckets[hash])
         if (Equal(node.key, key))
             throw std::runtime_error(
                 "Dictionary: Put() an element with such a key already exists"
@@ -28,12 +28,12 @@ void Dictionary<K, T>::Put(K key, T element) {
 }
 
 template <typename K, typename T>
-T& Dictionary<K, T>::Get(K key) const {
+const T& Dictionary<K, T>::Get(K key) const {
     /* Calculate the key hash */
     const unsigned short hash = Hash::Get(key) % _capacity;
 
     /* Try to get the node from the linked list */
-    for (Node node : _buckets[hash])
+    for (const Node& node : _buckets[hash])
         if (Equal(node.key, key))
             return node.element;
 

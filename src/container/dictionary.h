@@ -1,6 +1,7 @@
 #pragma once
 
 #include "linked_list.h"
+#include "util/class.h"
 
 /**
  * Simple minimalistic implementation of hash map
@@ -12,6 +13,8 @@ template <typename K, typename T>
 class Dictionary final {
 struct Node;
 public:
+    PREVENT_COPY_ALLOW_MOVE(Dictionary);
+
     /**
      * @param capacity Maximum number of elements without resizing
      */
@@ -21,16 +24,6 @@ public:
      * Free the memory
      */
     ~Dictionary() noexcept;
-
-    /**
-     * Delete the copy constructor
-     */
-    Dictionary(const Dictionary&) noexcept = delete;
-
-    /**
-     * Delete the copy operator
-     */
-    Dictionary& operator=(const Dictionary&) noexcept = delete;
 
     /**
      * Put an element into the hash map
@@ -44,7 +37,7 @@ public:
      * @param key The key to get the element by
      * @return Element with the similar key; nullptr if there is no such element
      */
-    T& Get(K key) const;
+    const T& Get(K key) const;
 
     /**
      * Iterator to go through the hash map
