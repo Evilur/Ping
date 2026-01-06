@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdarg>
+#include <cstdio>
 
 #define LOG_LEVEL 0
 
@@ -42,7 +42,7 @@
 
 class Logger final {
 public:
-    enum LogLevel {
+    enum LogLevel : char {
         TRACE, DEBUG, INFO, WARN, ERROR, FATAL
     };
 

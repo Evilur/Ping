@@ -1,6 +1,7 @@
 #pragma once
 
-#include <cstdio>
+#include "logger.h"
+
 #include <ctime>
 
 template <typename... Args>
@@ -9,7 +10,8 @@ void Logger::Log(FILE* const stream,
                  const char* const format,
                  Args... args) {
     /* Get current time */
-    char time_buffer[20];
+    constexpr int time_buffer_size = 20;
+    char time_buffer[time_buffer_size];
     const time_t current_time = time(nullptr);
     const tm* const time_info = localtime(&current_time);
     strftime(time_buffer, sizeof(time_buffer),
@@ -22,7 +24,10 @@ void Logger::Log(FILE* const stream,
             LOG_LEVEL_STR[log_level]);
 
     /* Print the message */
-    fprintf(stream, format, args...);
+    if constexpr (sizeof...(Args) > 0)
+        fprintf(stream, format, args...);
+    else
+        fputs(format, stream);
 
     /* Print a new line char */
     fputc('\n', stream);
