@@ -83,16 +83,21 @@ Rectangle {
         }
         ActionButton {
             source: 'qrc:/App/Image/status-bar/collapse.svg'
-            onClicked: console.log('Collapse button is clicked')
+            onClicked: root.showMinimized()
         }
         ActionButton {
             source: 'qrc:/App/Image/status-bar/maximize.svg'
-            onClicked: console.log('Maximize button is clicked')
+            onClicked: {
+                if (root.visibility === Window.Maximized)
+                    root.showNormal()
+                else
+                    root.showMaximized()
+            }
         }
         ActionButton {
             hoverColor: Color.RED
             source: 'qrc:/App/Image/status-bar/close.svg'
-            onClicked: console.log('Close button is clicked')
+            onClicked: Qt.quit()
         }
     }
 }
