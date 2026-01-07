@@ -22,7 +22,7 @@ void Settings::Init(){
 
     /* Parse the settings .ini file */
     std::ifstream config(Path::CONFIG_FILE);
-    const section_map* current_section = nullptr;
+    section_map* current_section = nullptr;
     while (!config.eof()) {
         /* Read the line */
         char line[1024];
@@ -75,7 +75,7 @@ void Settings::Init(){
 
         /* Put the parameter to the settings */
         try {
-            current_section->Get(key)->Set(value);
+            *current_section->Get(key) = value;
             TRACE_LOG("Parameter %s has been read from the disk", key);
         } catch (const std::runtime_error&) { }
     }
@@ -115,16 +115,14 @@ void Settings::Save() {
     INFO_LOG("The settings have been saved");
 }
 
-Settings::Parameter::Parameter(const int data) : _type(INTEGER) {
-    _data = new int(data);
-}
+Settings::Parameter::Parameter(const int data) noexcept :
+    _type(INTEGER), _data(new int(data)) { }
 
-Settings::Parameter::Parameter(const float data) : _type(FLOAT) {
-    _data = new float(data);
-}
+Settings::Parameter::Parameter(const float data) noexcept :
+    _type(FLOAT), _data(new float(data)) { }
 
-Settings::Parameter::Parameter(const char* const data) : _type(STRING) {
-    _data = new char[strlen(data)+ 1];
+Settings::Parameter::Parameter(const char* const data) noexcept :
+    _type(STRING), _data(new char[strlen(data) + 1]) {
     strcpy((char*)_data, data);
 }
 
@@ -134,30 +132,30 @@ Settings::Parameter::~Parameter() {
     else delete[] (char*)_data;
 }
 
-// ReSharper disable once CppMemberFunctionMayBeConst
-void Settings::Parameter::Set(const int data) {
+Settings::Parameter& Settings::Parameter::operator=(const int data) {
     if (_type != INTEGER) throw
-            std::runtime_error("Settings::Parameter: Set<int> invalid type");
+        std::runtime_error("Settings::Parameter: Set<int> invalid type");
     *(int*)_data = data;
+    return *this;
 }
 
-// ReSharper disable once CppMemberFunctionMayBeConst
-void Settings::Parameter::Set(const float data){
+Settings::Parameter& Settings::Parameter::operator=(const float data) {
     if (_type != FLOAT) throw
-            std::runtime_error("Settings::Parameter: Set<float> invalid type");
+        std::runtime_error("Settings::Parameter: Set<float> invalid type");
     *(float*)_data = data;
+    return *this;
 }
 
-void Settings::Parameter::Set(const char* const data){
+Settings::Parameter& Settings::Parameter::operator=(const char* const data) {
     if (_type == STRING) {
         delete[] (char*)_data;
         _data = new char[strlen(data)+ 1];
         strcpy((char*)_data, data);
-    } else if (_type == INTEGER) {
+    } else if (_type == INTEGER)
         *(int*)_data = atoi(data);
-    } else if (_type == FLOAT) {
+    else if (_type == FLOAT)
         *(float*)_data = atof(data);
-    }
+    return *this;
 }
 
 Settings::Parameter::operator int() const {

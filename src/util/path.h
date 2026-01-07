@@ -1,4 +1,6 @@
 #pragma once
+#include "util/class.h"
+
 #include <filesystem>
 
 /* If we are compiling for Unix based */
@@ -11,6 +13,8 @@ namespace fs = std::filesystem;
 
 class Path final {
 public:
+    PREVENT_INSTANCE(Path);
+
     /* Initialize the class */
     static void Init();
 

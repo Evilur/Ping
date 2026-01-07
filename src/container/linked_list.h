@@ -12,9 +12,9 @@ public:
 
     virtual ~LinkedList() noexcept;
 
-    T& Head() const;
+    T& Head();
 
-    T& Tail() const;
+    T& Tail();
 
     void Push(T element) noexcept;
 
@@ -34,7 +34,7 @@ public:
 
     unsigned int TryRemove(unsigned int index, unsigned int number) noexcept;
 
-    T& operator[](unsigned int index) const;
+    T& operator[](unsigned int index);
 
     class Iterator {
     public:
@@ -42,7 +42,7 @@ public:
 
         bool operator!=(const Iterator& other) const noexcept;
 
-        const T& operator*() const noexcept;
+        T& operator*() noexcept;
 
         Iterator& operator++() noexcept;
 

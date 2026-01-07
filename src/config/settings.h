@@ -1,8 +1,11 @@
 #pragma once
 #include "container/dictionary.h"
+#include "util/class.h"
 
 class Settings final {
 public:
+    PREVENT_INSTANCE(Settings);
+
     static void Init();
 
     static void Save();
@@ -10,24 +13,23 @@ public:
 private:
     class Parameter {
     public:
-        enum Type { INTEGER, FLOAT, STRING };
+        PREVENT_COPY_ALLOW_MOVE(Parameter);
 
-        Parameter(int data);
+        enum Type : char { INTEGER, FLOAT, STRING };
 
-        Parameter(float data);
+        Parameter(int data) noexcept;
 
-        Parameter(const char* data);
+        Parameter(float data) noexcept;
 
-        Parameter(const Parameter&) = delete;
-        Parameter* operator=(const Parameter&) = delete;
+        Parameter(const char* data) noexcept;
 
         ~Parameter();
 
-        void Set(int data);
+        Parameter& operator=(int data);
 
-        void Set(float data);
+        Parameter& operator=(float data);
 
-        void Set(const char* data);
+        Parameter& operator=(const char* data);
 
         explicit operator int() const;
 
@@ -36,12 +38,13 @@ private:
         explicit operator const char*() const;
 
     private:
-        void* _data = nullptr;
         const Type _type;
+        void* _data = nullptr;
     };
 
     using section_map = Dictionary<const char*, Parameter*>;
-    static inline Dictionary<const char*, section_map*>* _settings_map = nullptr;
+    static inline Dictionary<const char*, section_map*>* _settings_map =
+        nullptr;
 
 public:
     struct UI {

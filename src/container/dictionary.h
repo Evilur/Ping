@@ -37,7 +37,7 @@ public:
      * @param key The key to get the element by
      * @return Element with the similar key; nullptr if there is no such element
      */
-    const T& Get(K key) const;
+    T& Get(K key);
 
     /**
      * Iterator to go through the hash map
@@ -52,7 +52,7 @@ public:
 
         bool operator!=(const Iterator& other) const noexcept;
 
-        const Node& operator*() const noexcept;
+        Node& operator*() noexcept;
 
         Iterator& operator++() noexcept;
 

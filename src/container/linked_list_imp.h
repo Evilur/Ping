@@ -8,14 +8,14 @@ LinkedList<T>::~LinkedList() noexcept {
 }
 
 template <typename T>
-T& LinkedList<T>::Head() const {
+T& LinkedList<T>::Head() {
     if (_head == nullptr)
         throw std::runtime_error("LinkedList: Head() index out of range");
     return _head->value;
 }
 
 template <typename T>
-T& LinkedList<T>::Tail() const {
+T& LinkedList<T>::Tail() {
     if (_tail == nullptr)
         throw std::runtime_error("LinkedList: Tail() index out of range");
     return _tail->value;
@@ -198,7 +198,7 @@ bool LinkedList<T>::TryPopTail() noexcept {
 }
 
 template <typename T>
-T& LinkedList<T>::operator[](unsigned int index) const {
+T& LinkedList<T>::operator[](unsigned int index) {
     Node* node_ptr = _head;
     while (index-- > 0) {
         node_ptr = node_ptr->next;
@@ -231,7 +231,7 @@ bool LinkedList<T>::Iterator::operator!=(const Iterator& other) const noexcept {
 }
 
 template <typename T>
-const T& LinkedList<T>::Iterator::operator*() const noexcept {
+T& LinkedList<T>::Iterator::operator*() noexcept {
     return _node->value;
 }
 

@@ -10,7 +10,7 @@
 int main(int argc, char** argv) {
     /* Init static classes */
     Path::Init();
-    //Settings::Init();
+    Settings::Init();
 
     /* Create a GUI application object */
     INFO_LOG("Creating the Qt application");

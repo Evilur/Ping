@@ -18,8 +18,8 @@ Rectangle {
         }
 
         /* Move the window */
-        onPositionChanged: (mouse) => {
-            root.x += mouse.x - this.clickPosX;
+    onPositionChanged: (mouse) => {
+        root.x += mouse.x - this.clickPosX;
             root.y += mouse.y - this.clickPosY;
         }
     }

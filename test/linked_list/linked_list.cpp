@@ -3,7 +3,7 @@
 
 static void fill_list(LinkedList<int>& list);
 
-static void print_list(const LinkedList<int>& list);
+static void print_list(LinkedList<int>& list);
 
 void linked_list_unit_test() {
     UnitTest test("LinkedList");
@@ -21,7 +21,7 @@ void linked_list_unit_test() {
     });
 
     test.Run("Head() - Exception", [] {
-        const LinkedList<int> list;
+        LinkedList<int> list;
         std::cout << list.Head();
     });
 
@@ -32,7 +32,7 @@ void linked_list_unit_test() {
     });
 
     test.Run("Tail() - Exception", [] {
-        const LinkedList<int> list;
+        LinkedList<int> list;
         std::cout << list.Tail();
     });
 
@@ -285,7 +285,7 @@ static void fill_list(LinkedList<int>& list) {
     for (int i = 1; i <= 16; i++) list.Push(i);
 }
 
-static void print_list(const LinkedList<int>& list) {
+static void print_list(LinkedList<int>& list) {
     /* Print all elements */
     for (const int n : list) std::cout << n << std::endl;
 

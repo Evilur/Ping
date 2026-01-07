@@ -28,12 +28,12 @@ void Dictionary<K, T>::Put(K key, T element) {
 }
 
 template <typename K, typename T>
-const T& Dictionary<K, T>::Get(K key) const {
+T& Dictionary<K, T>::Get(K key) {
     /* Calculate the key hash */
     const unsigned short hash = Hash::Get(key) % _capacity;
 
     /* Try to get the node from the linked list */
-    for (const Node& node : _buckets[hash])
+    for (Node& node : _buckets[hash])
         if (Equal(node.key, key))
             return node.element;
 
@@ -93,8 +93,8 @@ Iterator::operator!=(const Iterator& other) const noexcept {
 }
 
 template <typename K, typename T>
-const Dictionary<K, T>::Node&
-Dictionary<K, T>::Iterator::operator*() const noexcept {
+Dictionary<K, T>::Node&
+Dictionary<K, T>::Iterator::operator*() noexcept {
     return *_iterator;
 }
 
