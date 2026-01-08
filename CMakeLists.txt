@@ -25,17 +25,19 @@ INCLUDE_DIRECTORIES(src)
 # Enable auto Qt file generation
 SET(CMAKE_AUTOMOC ON)
 
-# Get all *.cpp files
+# Get all *.cpp files except main.cpp
 FILE(GLOB_RECURSE SOURCES "src/*.cpp")
+LIST(FILTER SOURCES EXCLUDE REGEX ".*/main\\.cpp$")
 
-# Get all *.ts files
-FILE(GLOB_RECURSE TS_FILES "assets/locale/*.ts")
-
-# Build all *.cpp and *.qrc files
-QT_ADD_EXECUTABLE(Ping ${SOURCES} ${SOURCES_QRC})
+# Build the client
+QT_ADD_EXECUTABLE(Ping ${SOURCES} src/client/main.cpp)
 
 # Add locale files
+FILE(GLOB_RECURSE TS_FILES "assets/locale/*.ts")
 QT_ADD_TRANSLATIONS(Ping TS_FILES ${TS_FILES})
+
+# Build the server
+ADD_EXECUTABLE(Pings ${SOURCES} src/server/main.cpp)
 
 # Build all *.cpp files for tests
 FILE(GLOB_RECURSE SOURCES_TEST "test/*.cpp")

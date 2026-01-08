@@ -18,9 +18,9 @@ int main(int argc, char** argv) {
 
     /* Load translation */
     QTranslator translator;
-    if(translator
-        .load((const char*)String::Format(":/i18n/%s.qm",
-                                          (const char*)Settings::UI::language))
+    if(translator.load((const char*)String::Format(
+            ":/i18n/%s.qm",
+            (const char*)Settings::UI::language))
         ) {
         QGuiApplication::installTranslator(&translator);
         INFO_LOG("Translation '%s' has been loaded",
