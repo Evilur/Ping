@@ -42,6 +42,20 @@ T& Dictionary<K, T>::Get(K key) {
 }
 
 template <typename K, typename T>
+const T& Dictionary<K, T>::Get(K key) const {
+    /* Calculate the key hash */
+    const unsigned short hash = Hash::Get(key) % _capacity;
+
+    /* Try to get the node from the linked list */
+    for (const Node& node : _buckets[hash])
+        if (Equal(node.key, key))
+            return node.element;
+
+    /* If there is NOT an element in the linked list, throw an error */
+    throw std::runtime_error("Dictionary::Get() no such an element");
+}
+
+template <typename K, typename T>
 Dictionary<K, T>::Iterator Dictionary<K, T>::begin() const noexcept {
     /* Iterate over all buckets */
     for (unsigned short i = 0; i < _capacity; ++i)
@@ -94,9 +108,11 @@ Iterator::operator!=(const Iterator& other) const noexcept {
 
 template <typename K, typename T>
 Dictionary<K, T>::Node&
-Dictionary<K, T>::Iterator::operator*() noexcept {
-    return *_iterator;
-}
+Dictionary<K, T>::Iterator::operator*() noexcept { return *_iterator; }
+
+template <typename K, typename T>
+const Dictionary<K, T>::Node&
+Dictionary<K, T>::Iterator::operator*() const noexcept { return *_iterator; }
 
 template <typename K, typename T>
 Dictionary<K, T>::Iterator&

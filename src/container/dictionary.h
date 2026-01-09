@@ -29,15 +29,25 @@ public:
      * Put an element into the hash map
      * @param key The key that can be used to retrieve the element
      * @param element Element to put into the map
+     * @throw std::runtime_error If there is already an element with such a key
      */
     void Put(K key, T element);
 
     /**
      * Get the element from the hash map by the key
      * @param key The key to get the element by
-     * @return Element with the similar key; nullptr if there is no such element
+     * @throw std::runtime_error If there is no an element with such a key
+     * @return Element with such a key, nullptr if there is no such element
      */
     T& Get(K key);
+
+    /**
+     * Get the element from the hash map by the key
+     * @param key The key to get the element by
+     * @throw std::runtime_error If there is no an element with such a key
+     * @return Element with such a key, nullptr if there is no such element
+     */
+    const T& Get(K key) const;
 
     /**
      * Iterator to go through the hash map
@@ -47,12 +57,13 @@ public:
         explicit Iterator(unsigned short index,
                           unsigned short capacity,
                           const LinkedList<Node>* lists,
-                          LinkedList<Node>::Iterator iterator
-                          ) noexcept;
+                          LinkedList<Node>::Iterator iterator) noexcept;
 
         bool operator!=(const Iterator& other) const noexcept;
 
         Node& operator*() noexcept;
+
+        const Node& operator*() const noexcept;
 
         Iterator& operator++() noexcept;
 

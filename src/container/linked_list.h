@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdexcept>
+#include "util/class.h"
 
 template <typename T>
 class LinkedList {
@@ -8,13 +8,19 @@ protected:
     struct Node;
 
 public:
+    PREVENT_COPY_ALLOW_MOVE(LinkedList);
+
     LinkedList() = default;
 
     virtual ~LinkedList() noexcept;
 
     T& Head();
 
+    const T& Head() const;
+
     T& Tail();
+
+    const T& Tail() const;
 
     void Push(T element) noexcept;
 
@@ -34,7 +40,9 @@ public:
 
     unsigned int TryRemove(unsigned int index, unsigned int number) noexcept;
 
-    T& operator[](unsigned int index);
+    T& Get(unsigned int index);
+
+    const T& Get(unsigned int index) const;
 
     class Iterator {
     public:
@@ -43,6 +51,8 @@ public:
         bool operator!=(const Iterator& other) const noexcept;
 
         T& operator*() noexcept;
+
+        const T& operator*() const noexcept;
 
         Iterator& operator++() noexcept;
 
