@@ -44,7 +44,7 @@ Rectangle {
                 width: parent.size - 4
                 height: parent.size - 4
             }
-            source: 'qrc:/App/Image/status-bar/burger.svg'
+            source: 'qrc:/App/Image/burger.svg'
         }
 
         onEntered: ToolTip.show(this, qsTr('Menu'))
@@ -82,11 +82,11 @@ Rectangle {
             right: parent.right
         }
         ActionButton {
-            source: 'qrc:/App/Image/status-bar/collapse.svg'
+            source: 'qrc:/App/Image/collapse.svg'
             onClicked: root.showMinimized()
         }
         ActionButton {
-            source: 'qrc:/App/Image/status-bar/maximize.svg'
+            source: 'qrc:/App/Image/maximize.svg'
             onClicked: {
                 if (root.visibility === Window.Maximized)
                     root.showNormal()
@@ -96,7 +96,7 @@ Rectangle {
         }
         ActionButton {
             hoverColor: Color.RED
-            source: 'qrc:/App/Image/status-bar/close.svg'
+            source: 'qrc:/App/Image/close.svg'
             onClicked: Qt.quit()
         }
     }

@@ -37,10 +37,19 @@ Button {
             top: parent.top
             margins: parent.margin
         }
-        width: 50
-        height: 50
+        width: size
+        height: size
         radius: width / 2
-        color: Color.CRUST
+
+        readonly property int size: 50
+
+        Image {
+            source: 'file:/tmp/avatar.jpg' // Placeholder file
+            sourceSize {
+                width: parent.size
+                height: parent.size
+            }
+        }
     }
 
     /* Title */
@@ -83,7 +92,7 @@ Button {
                 case ChatType.CHANNEL:
                     imageName = 'channel';
             }
-            return `qrc:/App/Image/chat-list/${imageName}.svg`;
+            return `qrc:/App/Image/${imageName}.svg`;
         }
         sourceSize {
             width: 16
