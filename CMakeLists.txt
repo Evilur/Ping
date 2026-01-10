@@ -14,9 +14,10 @@ ENDIF ()
 
 # Find Qt6 package
 FIND_PACKAGE(Qt6 REQUIRED COMPONENTS
-    Quick
-    Qml
+    Core5Compat
     LinguistTools
+    Qml
+    Quick
 )
 
 # Search header files in the 'src' directory

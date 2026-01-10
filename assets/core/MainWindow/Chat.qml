@@ -30,25 +30,14 @@ Button {
     }
 
     /* Avatar */
-    Rectangle {
+    Avatar {
         id: avatar
+        source: 'file:/tmp/avatar.jpg' // Placeholder file
+        size: 50
         anchors {
             left: parent.left
             top: parent.top
             margins: parent.margin
-        }
-        width: size
-        height: size
-        radius: width / 2
-
-        readonly property int size: 50
-
-        Image {
-            source: 'file:/tmp/avatar.jpg' // Placeholder file
-            sourceSize {
-                width: parent.size
-                height: parent.size
-            }
         }
     }
 
