@@ -1,3 +1,5 @@
+#define CLIENT_MODE
+
 #include "util/path.h"
 #include "config/settings.h"
 #include "type/string.h"

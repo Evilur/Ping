@@ -1,17 +1,16 @@
+#pragma once
+
 #include "settings.h"
 #include "util/logger.h"
 #include "util/path.h"
 
 #include <fstream>
 
-void Settings::Init(){
-    /* Add UI settings */
-    section_map* ui_map = new section_map(5);
-    ui_map->Put("chat_list_width", &UI::chat_list_width);
-
+inline void Settings::Init(){
     /* Add all settings sections to the master dictionary */
     _settings_map = new Dictionary<const char*, section_map*>(16);
-    _settings_map->Put("UI", ui_map);
+    PARAMETERS_DICTIONARIES;
+    PARAMETERS_IN_DICTIONARIES;
 
     /* Read the settings from the disk */
     /* TODO: handle existing .bak config file */
@@ -51,9 +50,7 @@ void Settings::Init(){
                 comment_start != nullptr) *comment_start = '\0';
 
             /* Save the current section */
-            try {
-                current_section = _settings_map->Get(line_ptr);
-            } catch (const std::runtime_error&) { }
+            current_section = _settings_map->Get(line_ptr);
             continue;
         }
 
@@ -74,17 +71,15 @@ void Settings::Init(){
         if (current_section == nullptr) continue;
 
         /* Put the parameter to the settings */
-        try {
-            *current_section->Get(key) = value;
-            TRACE_LOG("Parameter %s has been read from the disk", key);
-        } catch (const std::runtime_error&) { }
+        *current_section->Get(key) = value;
+        TRACE_LOG("Parameter %s has been read from the disk", key);
     }
 
     /* Print the log */
     INFO_LOG("The settings have been read from the disk");
 }
 
-void Settings::Save() {
+inline void Settings::Save() {
     /* Print the log */
     INFO_LOG("Saving the settings");
 
@@ -97,15 +92,15 @@ void Settings::Save() {
     std::ofstream config(Path::CONFIG_FILE);
     for (const auto& [section_name, settings_section] : *_settings_map) {
         /* Print a section name */
-        config << "[" << section_name << "]" << std::endl;
+        config << "[" << section_name << "]" << '\n';
 
         /* Print all settings of this section */
         for (const auto& [setting_name, parameter] : *settings_section)
             config << setting_name << " = "
-                   << (const char*)*parameter << std::endl;
+                   << (const char*)*parameter << '\n';
 
         /* Print the blank line */
-        config << std::endl;
+        config << '\n';
     }
 
     /* Delete the backup file */
@@ -115,14 +110,20 @@ void Settings::Save() {
     INFO_LOG("The settings have been saved");
 }
 
-Settings::Parameter::Parameter(const int data) noexcept :
-    _type(INTEGER), _data(new int(data)) { }
+Settings::Parameter::Parameter(const int data) noexcept : _type(INTEGER) {
+    try { _data = new int(data); }
+    catch (const std::exception&) { FATAL_LOG("Allocation error"); }
+}
 
-Settings::Parameter::Parameter(const float data) noexcept :
-    _type(FLOAT), _data(new float(data)) { }
+Settings::Parameter::Parameter(const float data) noexcept : _type(FLOAT) {
+    try { _data = new float(data); }
+    catch (const std::exception&) { FATAL_LOG("Allocation error"); }
+}
 
 Settings::Parameter::Parameter(const char* const data) noexcept :
-    _type(STRING), _data(new char[strlen(data) + 1]) {
+    _type(STRING) {
+    try { _data = new char[strlen(data) + 1]; }
+    catch (const std::exception&) { FATAL_LOG("Allocation error"); }
     strcpy((char*)_data, data);
 }
 
