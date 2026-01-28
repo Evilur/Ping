@@ -13,7 +13,7 @@ namespace fs = std::filesystem;
 
 class Path final {
 public:
-    PREVENT_INSTANCE(Path);
+    PREVENT_INSTANTIATION(Path);
 
     /* Initialize the class */
     static void Init();

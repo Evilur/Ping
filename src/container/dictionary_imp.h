@@ -11,7 +11,7 @@ template <typename K, typename T>
 Dictionary<K, T>::~Dictionary() noexcept { delete[] _buckets; }
 
 template <typename K, typename T>
-void Dictionary<K, T>::Put(K key, T element) {
+void Dictionary<K, T>::Put(const K& key, T element) {
     /* Calculate the key hash */
     const unsigned short hash = Hash::Get(key) % _capacity;
 
@@ -28,7 +28,7 @@ void Dictionary<K, T>::Put(K key, T element) {
 }
 
 template <typename K, typename T>
-T& Dictionary<K, T>::Get(K key) {
+T& Dictionary<K, T>::Get(const K& key) {
     /* Calculate the key hash */
     const unsigned short hash = Hash::Get(key) % _capacity;
 
@@ -42,7 +42,7 @@ T& Dictionary<K, T>::Get(K key) {
 }
 
 template <typename K, typename T>
-const T& Dictionary<K, T>::Get(K key) const {
+const T& Dictionary<K, T>::Get(const K& key) const {
     /* Calculate the key hash */
     const unsigned short hash = Hash::Get(key) % _capacity;
 
@@ -53,6 +53,44 @@ const T& Dictionary<K, T>::Get(K key) const {
 
     /* If there is NOT an element in the linked list, throw an error */
     throw std::runtime_error("Dictionary::Get() no such an element");
+}
+
+template <typename K, typename T>
+bool Dictionary<K, T>::Has(const K& key) const noexcept {
+    /* Calculate the key hash */
+    const unsigned short hash = Hash::Get(key) % _capacity;
+
+    /* Try to get the node from the linked list */
+    for (const Node& node : _buckets[hash])
+        if (Equal(node.key, key))
+            return true;
+
+    /* If there is NOT an element in the linked list, return false */
+    return false;
+}
+
+template <typename K, typename T>
+void Dictionary<K, T>::Delete(const K& key) {
+    /* Calculate the key hash */
+    const unsigned short hash = Hash::Get(key) % _capacity;
+
+    /* Try to get the node from the linked list */
+    short index = 0;
+    bool has_element = false;
+    for (const Node& node : _buckets[hash]) {
+        if (Equal(node.key, key)) {
+            has_element = true;
+            break;
+        }
+        ++index;
+    }
+
+    /* Throw an error if there is no an element with such a key */
+    if (!has_element)
+        throw std::runtime_error("Dictionary::Delete() no such an element");
+
+    /* If all is OK delete the element with such an index from the bucket */
+    _buckets[hash].Remove(index);
 }
 
 template <typename K, typename T>
@@ -77,11 +115,10 @@ Dictionary<K, T>::Iterator Dictionary<K, T>::end() const noexcept {
 }
 
 template <typename K, typename T>
-bool Dictionary<K, T>::Equal(K key1, K key2) noexcept {
+bool Dictionary<K, T>::Equal(const K& key1, const K& key2) noexcept {
     if constexpr (std::is_same_v<K, const char*>)
         return strcmp(key1, key2) == 0;
-    else
-        return key1 == key2;
+    else return key1 == key2;
 }
 
 template <typename K, typename T>

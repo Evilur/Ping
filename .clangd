@@ -48,6 +48,8 @@ Diagnostics:
       - readability-magic-numbers
       - cppcoreguidelines-pro-bounds-pointer-arithmetic
       - fuchsia-default-arguments-calls
+      - cppcoreguidelines-pro-type-vararg
+      - hicpp-vararg
       - fuchsia-overloaded-operator
       - google-readability-braces-around-statements
       - google-readability-casting
@@ -56,6 +58,8 @@ Diagnostics:
       - google-runtime-int
       - hicpp-no-array-decay
       - hicpp-use-auto
+      - readability-identifier-length
+      - fuchsia-default-arguments-declarations
       - cppcoreguidelines-avoid-const-or-ref-data-members
       - modernize-use-auto
       - bugprone-easily-swappable-parameters

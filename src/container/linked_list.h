@@ -36,9 +36,14 @@ public:
 
     bool TryPopTail() noexcept;
 
-    void Remove(unsigned int index, unsigned int number);
+    void Remove(unsigned int index, unsigned int number = 1);
 
-    unsigned int TryRemove(unsigned int index, unsigned int number) noexcept;
+    unsigned int TryRemove(unsigned int index, unsigned int number = 1)
+    noexcept;
+
+    void Remove(const T& element,
+                bool (*equal) (const T& e1, const T& e2) =
+                    [](const T& e1, const T& e2) { return e1 == e2; });
 
     T& Get(unsigned int index);
 

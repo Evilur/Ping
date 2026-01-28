@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cstring>
 #include <type_traits>
 
@@ -14,7 +15,8 @@ private:
 
 template <>
 inline unsigned long Hash::Get(const char* const& element) noexcept {
-    return Calculate((const unsigned char*)(void*)element, strlen(element) + 1);
+    return Calculate((const unsigned char*)(void*)element,
+                     strlen(element) + 1);
 }
 
 template <>
