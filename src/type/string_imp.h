@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string_view>
+#include "type/string.h"
 #include <cstdio>
 
 template <typename T>
@@ -25,7 +25,7 @@ T String::ToInt(const char* str) noexcept {
 }
 
 template <typename... Args>
-String String::Format(const char* const format, Args... args) noexcept {
+String String::Format(const char* const format, Args... args) {
     const int string_size = snprintf(nullptr, 0, format, args...);
     String result(string_size);
     sprintf(result._str, format, args...);

@@ -4,31 +4,37 @@
 
 class String final {
 public:
-    String() noexcept = delete;
+    String() = delete;
 
-    explicit String(unsigned long str_size) noexcept;
+    explicit String(unsigned long str_size);
 
-    String(const char* str) noexcept;
+    String(const char* str);
 
-    String(const char* str, unsigned long str_size) noexcept;
+    String(const char* str, unsigned long str_size);
 
-    explicit String(const String& string) noexcept;
+    String(const String& other);
 
-    ~String() noexcept;
+    String& operator=(const String& other);
 
-    String operator+(char symbol) const noexcept;
+    String(String&& other) noexcept;
+
+    String& operator=(String&& other) noexcept;
+
+    String operator+(char symbol) const;
 
     operator const char*() const noexcept;
 
     operator std::string_view() const noexcept;
 
+    ~String() noexcept;
+
 private:
-    char* const _str;
+    char* _str;
     unsigned long _size;
 
 public:
     template<typename... Args>
-    static String Format(const char* format, Args... args) noexcept;
+    static String Format(const char* format, Args... args);
 
     template <typename T>
     static T ToInt(const char* str) noexcept;
